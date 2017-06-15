@@ -45,14 +45,16 @@ def main(args=sys.argv):
         )
         parser.add_argument('--min-remaining-token-lifespan', default=180, help='if the token has a shorter lifespan remaining, it is refreshed (default: 180)')
         parser.add_argument('--new-token-lifespan', default=900, help='the lifespan of newly refreshed tokens (default: 900)')
+        parser.add_argument('--type', default='auto', choices=['auto']+available_authentication_types().keys(), help='the type of authentication to perform (default: auto)')
         parser.add_argument('command', nargs=argparse.REMAINDER)
         parsed = parser.parse_args(args[1:])
 
         if not parsed.command:
             fatal('a command is required')
-        auth = available_authentication_types().get(parsed.command[0])
+
+        auth = available_authentication_types().get(parsed.command[0] if parsed.type == 'auto' else parsed.type)
         if not auth:
-            fatal('\'{}\' is not a supported command. supported commands: {}'.format(parsed.command[0], ', '.join(available_authentication_types().keys())))
+            fatal('unable to determine authentication type for \'{}\' command. recognized commands: {}'.format(parsed.command[0], ', '.join(available_authentication_types().keys())))
 
         if 'MFADO_SESSIONS' not in os.environ:
             print('eval $(MFADO_SESSIONS=$MFADO_SESSIONS ' + ' '.join([shell_quote(x) for x in sys.argv]) + ')')

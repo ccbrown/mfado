@@ -15,4 +15,4 @@ class TestAWS(unittest.TestCase):
 
     def test_token_key(self):
         self.assertEqual('aws', AWSAuthentication().token_key(['aws', 's3', 'ls']))
-        self.assertEqual('aws,profile=foo', AWSCommand().token_key(['aws', 's3', '--profile', 'foo', 'ls']))
+        self.assertEqual('aws,profile=foo', AWSAuthentication().token_key(['aws', 's3', '--profile', 'foo', 'ls']))

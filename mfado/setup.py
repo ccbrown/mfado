@@ -14,6 +14,10 @@ def main(args=sys.argv):
         mfado () { eval $(mfado-exec "$@") }
 
     If you're using another shell, you need to add an alias with the same effect as the ones above.
+
+    Once you've created the alias, you'll need to start a new shell session.
+
+    See mfado-exec --help for more options.
     ''', file=sys.stderr)
     sys.exit(1)
 
